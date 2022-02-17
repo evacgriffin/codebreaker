@@ -27,7 +27,6 @@ class MainMenu(Menu):
         self.reset_btn.enabled = False
 
         # Highlightable objects
-        self.highlightable = []
         self.highlightable.append(self.difficulty_btn)
         self.highlightable.append(self.rules_btn)
         self.highlightable.append(self.start_btn)
