@@ -28,8 +28,6 @@ class State:
             if h.hitbox[0] <= mouse_pos[0] <= h.hitbox[1] and h.hitbox[2] <= mouse_pos[1] <= h.hitbox[3]:
                 return h
 
-        return None
-
     def update(self):
         pass
 

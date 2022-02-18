@@ -1,7 +1,7 @@
-import pygame as pg
 from menu import Menu
-from gameplay import Gameplay
 from button import Button
+from difficulty_select import DifficultySelect
+from rules import Rules
 
 
 class MainMenu(Menu):
@@ -34,13 +34,29 @@ class MainMenu(Menu):
         self.highlightable.append(self.reset_btn)
 
         # On-clicked property
+        self.difficulty_btn.on_clicked = self.on_difficulty_btn_clicked
+        self.rules_btn.on_clicked = self.on_rules_btn_clicked
         self.start_btn.on_clicked = self.on_start_btn_clicked
+        self.resume_btn.on_clicked = self.on_resume_btn_clicked
+        self.reset_btn.on_clicked = self.on_reset_btn_clicked
 
+    def on_difficulty_btn_clicked(self):
+        pass
+
+    def on_rules_btn_clicked(self):
+        self.manager.push(Rules(self.manager, False))
 
     def on_start_btn_clicked(self):
-        self.manager.pop()
-        if not self.is_paused:
-            self.manager.push(Gameplay(self.manager))
+        pass
+        #self.manager.pop()
+        #if not self.is_paused:
+            #self.manager.push(Gameplay(self.manager))
+
+    def on_resume_btn_clicked(self):
+        pass
+
+    def on_reset_btn_clicked(self):
+        pass
 
     def process_input(self, event):
         Menu.process_input(self, event)
