@@ -12,9 +12,12 @@ class Manager:
         self.states[-1].draw(screen)
 
     def push(self, state):
+        if self.states:
+            self.states[-1].deactivate()
         self.states.append(state)
 
     def pop(self):
+        self.states[-1].deactivate()
         self.states.pop()
 
     def clear(self):

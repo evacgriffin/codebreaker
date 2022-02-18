@@ -9,6 +9,8 @@ class State:
         self.curr_hovered_obj = None
 
     def process_input(self, event):
+        if self.curr_hovered_obj:
+            self.curr_hovered_obj.hovered = False
         # Get object under mouse
         hovered_obj = self.get_obj_under_mouse()
 
@@ -33,3 +35,8 @@ class State:
 
     def draw(self, screen):
         pass
+
+    def deactivate(self):
+        if self.curr_hovered_obj:
+            self.curr_hovered_obj.hovered = False
+        self.curr_hovered_obj = None

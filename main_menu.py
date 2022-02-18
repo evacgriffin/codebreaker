@@ -41,7 +41,7 @@ class MainMenu(Menu):
         self.reset_btn.on_clicked = self.on_reset_btn_clicked
 
     def on_difficulty_btn_clicked(self):
-        pass
+        self.manager.push(DifficultySelect(self.manager, False))
 
     def on_rules_btn_clicked(self):
         self.manager.push(Rules(self.manager, False))
