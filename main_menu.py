@@ -2,6 +2,7 @@ from menu import Menu
 from button import Button
 from difficulty_select import DifficultySelect
 from rules import Rules
+from gameplay import Gameplay
 
 
 class MainMenu(Menu):
@@ -48,9 +49,9 @@ class MainMenu(Menu):
 
     def on_start_btn_clicked(self):
         pass
-        #self.manager.pop()
-        #if not self.is_paused:
-            #self.manager.push(Gameplay(self.manager))
+        self.manager.pop()
+        if not self.is_paused:
+            self.manager.push(Gameplay(self.manager))
 
     def on_resume_btn_clicked(self):
         pass

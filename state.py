@@ -7,6 +7,7 @@ class State:
         self.manager = manager
         self.highlightable = []
         self.curr_hovered_obj = None
+        self.curr_selected_radio = None
 
     def process_input(self, event):
         if self.curr_hovered_obj:
@@ -22,6 +23,17 @@ class State:
 
         if event.type == pg.MOUSEBUTTONDOWN and hasattr(hovered_obj, 'on_clicked'):
             hovered_obj.on_clicked()
+
+            if hasattr(hovered_obj, 'type') and hovered_obj.type == 'radio':
+                if hovered_obj.selected:
+                    self.curr_selected_radio = hovered_obj
+
+                elif self.curr_selected_radio:
+                    self.curr_selected_radio.fill_color = None
+                    self.curr_selected_radio.selected = False
+
+                self.curr_selected_radio = hovered_obj
+                self.curr_selected_radio.fill_color = (0, 0, 0)
 
     def get_obj_under_mouse(self):
         mouse_pos = pg.mouse.get_pos()
