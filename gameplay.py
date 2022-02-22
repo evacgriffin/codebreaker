@@ -106,7 +106,11 @@ class Gameplay(State):
         self.turns[self.curr_turn].begin_turn()
 
     def on_submit_btn_clicked(self):
+        self.turns[self.curr_turn].resolve(self.code)
         self.submit_btn.enabled = False
+        self.check_end()
+        self.curr_turn += 1
+        self.turns[self.curr_turn].begin_turn()
 
     def on_pause_btn_clicked(self):
         self.manager.push(PauseMenu(self.manager, True))
@@ -154,16 +158,20 @@ class Gameplay(State):
         # Display previous hints
         for t in self.turns:
             if 'black' in t.hint or 'white' in t.hint:
-                t.show_hint(screen)
+                for y in range(t.curr_turn * 2, t.curr_turn * 2 + 2):
+                    for x in range(0, 2):
+                        if t.hint[2 * y + x - t.curr_turn * 4] == 'black':
+                            pg.draw.circle(screen, t.black, (312.5 + x * 25, 12.5 + y * 25), 5)
+                        elif t.hint[2 * y + x - t.curr_turn * 4] == 'white':
+                            pg.draw.circle(screen, t.white, (312.5 + x * 25, 12.5 + y * 25), 5)
+                        elif t.hint[2 * y + x - t.curr_turn * 4] == 'empty':
+                            pg.draw.circle(screen, t.empty, (312.5 + x * 25, 12.5 + y * 25), 5)
 
-    def check_end(self, curr_hint, curr_turn):
-        if len(curr_hint) == 4 and 'white' not in curr_hint and 'empty' not in curr_hint:
+    def check_end(self):
+        if len(self.turns[self.curr_turn].hint) == 4 and 'white' not in self.turns[self.curr_turn].hint \
+                and 'empty' not in self.turns[self.curr_turn].hint:
             #self.win_msg.draw(self.screen)
-            self.highlightable = []
-            return 'win'
-        elif curr_turn == self.num_rounds - 1:
+            pass
+        elif self.curr_turn == self.num_rounds - 1:
             #self.lose_msg.draw(self.screen)
-            self.highlightable = []
-            return 'loss'
-        else:
-            return None
+            pass

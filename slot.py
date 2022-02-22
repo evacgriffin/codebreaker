@@ -22,7 +22,6 @@ class Slot:
                        25 + self.y * 50 - self.radius, 25 + self.y * 50 + self.radius, self.x, self.y]
 
         self.enabled = False
-        self.submitted = False
         self.hovered = False
         self.selected = False
 

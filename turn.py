@@ -44,23 +44,11 @@ class Turn:
         while len(self.hint) < 4:
             self.hint.append('empty')
 
-    def show_hint(self, screen):
-        for y in range(self.curr_turn*2, self.curr_turn*2 + 2):
-            for x in range(0, 2):
-                if self.hint[2*y+x-self.curr_turn*4] == 'black':
-                    pg.draw.circle(screen, self.black, (312.5 + x * 25, 12.5 + y * 25), 5)
-                elif self.hint[2*y+x-self.curr_turn*4] == 'white':
-                    pg.draw.circle(screen, self.white, (312.5 + x * 25, 12.5 + y * 25), 5)
-                elif self.hint[2*y+x-self.curr_turn*4] == 'empty':
-                    pg.draw.circle(screen, self.empty, (312.5 + x * 25, 12.5 + y * 25), 5)
-
     def end_turn(self):
         for slot in self.slots:
-            slot.submitted = True
             slot.enabled = False
 
-    def resolve(self, code, screen):
+    def resolve(self, code):
         self.lock_guess()
         self.check_guess(code)
-        self.show_hint(screen)
         self.end_turn()
