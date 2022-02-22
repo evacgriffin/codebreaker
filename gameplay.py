@@ -110,8 +110,6 @@ class Gameplay(State):
         self.turns[self.curr_turn].resolve(self.code)
         self.submit_btn.enabled = False
         self.check_end()
-        self.curr_turn += 1
-        self.turns[self.curr_turn].begin_turn()
 
     def on_pause_btn_clicked(self):
         self.manager.push(PauseMenu(self.manager, True))
@@ -172,7 +170,8 @@ class Gameplay(State):
         if len(self.turns[self.curr_turn].hint) == 4 and 'white' not in self.turns[self.curr_turn].hint \
                 and 'empty' not in self.turns[self.curr_turn].hint:
             self.manager.push(EndGame(self.manager, 'YOU WIN'))
-            pass
         elif self.curr_turn == self.num_rounds - 1:
             self.manager.push(EndGame(self.manager, 'GAME OVER'))
-            pass
+        else:
+            self.curr_turn += 1
+            self.turns[self.curr_turn].begin_turn()
