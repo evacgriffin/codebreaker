@@ -22,9 +22,11 @@ class State:
             self.curr_hovered_obj.hovered = True
 
         if event.type == pg.MOUSEBUTTONDOWN and hasattr(hovered_obj, 'on_clicked'):
-            hovered_obj.on_clicked()
-
             if hasattr(hovered_obj, 'type') and hovered_obj.type == 'radio':
+                for h in self.highlightable:
+                    if hasattr(h, 'selected') and h.selected:
+                        self.curr_selected_radio = h
+
                 if hovered_obj.selected:
                     self.curr_selected_radio = hovered_obj
 
@@ -34,6 +36,8 @@ class State:
 
                 self.curr_selected_radio = hovered_obj
                 self.curr_selected_radio.fill_color = (0, 0, 0)
+
+            hovered_obj.on_clicked()
 
     def get_obj_under_mouse(self):
         mouse_pos = pg.mouse.get_pos()

@@ -20,7 +20,8 @@ class Menu(State):
         State.__init__(self, manager)
         self.rect = pg.Rect(self.x, self.y, self.width, self.height)
         self.rect_center = (self.width / 2 + self.x, self.height / 2 + self.y)
-        self.font = pg.font.SysFont('Calibri', 30)
+        self.header_font = pg.font.SysFont('Calibri', 30)
+        self.sub_font = pg.font.SysFont('Calibri', 20)
         self.outline = [self.x - 2, self.y - 2, self.width + 2, self.height + 2]
 
     def draw(self, screen):

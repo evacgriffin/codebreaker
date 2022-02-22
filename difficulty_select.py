@@ -1,9 +1,13 @@
 from menu import Menu
 from button import Button
 from radio_button import RadioButton
+from gameplay import Gameplay
 
 
 class DifficultySelect(Menu):
+    # Default difficulty: normal
+    difficulty = 1
+
     def __init__(self, manager, is_paused):
         Menu.__init__(self, manager)
         self.is_paused = is_paused
@@ -20,6 +24,8 @@ class DifficultySelect(Menu):
         radio_x = 100
         self.easy_rad = RadioButton(radio_x, 150, 'Easy')
         self.normal_rad = RadioButton(radio_x, 200, 'Normal')
+        self.normal_rad.selected = True
+        self.normal_rad.fill_color = (0, 0, 0)
         self.hard_rad = RadioButton(radio_x, 250, 'Hard')
         self.easy_rad.on_clicked = self.on_easy_clicked
         self.normal_rad.on_clicked = self.on_normal_clicked
@@ -28,6 +34,7 @@ class DifficultySelect(Menu):
         # Buttons
         self.back_btn = Button(self.x + self.width - 210, self.y + 250, self.font, 'Back')
         self.start_btn = Button(self.x + self.width - 210, self.y + 300, self.font, 'Start')
+        self.start_btn.enabled = False
         self.back_btn.on_clicked = self.on_back_btn_clicked
         self.start_btn.on_clicked = self.on_start_btn_clicked
 
@@ -42,16 +49,17 @@ class DifficultySelect(Menu):
         self.manager.pop()
 
     def on_start_btn_clicked(self):
-        pass
+        self.manager.pop()
+        self.manager.push(Gameplay(self.manager))
 
     def on_easy_clicked(self):
-        pass
+        self.difficulty = 0
 
     def on_normal_clicked(self):
-        pass
+        self.difficulty = 1
 
     def on_hard_clicked(self):
-        pass
+        self.difficulty = 2
 
     def draw(self, screen):
         Menu.draw(self, screen)

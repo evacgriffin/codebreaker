@@ -5,6 +5,7 @@ from pin import Pin
 from slot import Slot
 from button import Button
 from turn import Turn
+from pause_menu import PauseMenu
 
 
 class Gameplay(State):
@@ -28,7 +29,7 @@ class Gameplay(State):
         self.pins = []
         self.slots = []
         self.buttons = []
-        #self.highlightable = []
+        self.highlightable = []
         self.turns = []
 
         # Create pins
@@ -54,20 +55,19 @@ class Gameplay(State):
         self.buttons.append(self.submit_btn)
         self.highlightable.append(self.submit_btn)
 
-        self.menu_btn = Button(self.width - border - btn_width, top, self.font, 'Menu')
-        self.menu_btn.enabled = False
-        self.buttons.append(self.menu_btn)
-        self.highlightable.append(self.menu_btn)
+        self.pause_btn = Button(self.width - border - btn_width, top, self.font, 'Pause')
+        self.buttons.append(self.pause_btn)
+        self.highlightable.append(self.pause_btn)
 
         # On-clicked property
         self.submit_btn.on_clicked = self.on_submit_btn_clicked
-        self.menu_btn.on_clicked = self.on_menu_btn_clicked
+        self.pause_btn.on_clicked = self.on_pause_btn_clicked
 
     def on_submit_btn_clicked(self):
         pass
 
-    def on_menu_btn_clicked(self):
-        pass
+    def on_pause_btn_clicked(self):
+        self.manager.push(PauseMenu(self.manager, True))
 
     def draw(self, screen):
         screen.fill(self.bg)

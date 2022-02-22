@@ -23,7 +23,7 @@ class Rules(Menu):
 
         # Buttons
         self.highlightable = []
-        self.back_btn = Button(self.x + 85, self.y + 310, self.font, 'Back')
+        self.back_btn = Button(self.x + 85, self.y + 310, self.header_font, 'Back')
         self.highlightable.append(self.back_btn)
         self.back_btn.on_clicked = self.on_back_btn_clicked
 
