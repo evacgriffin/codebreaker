@@ -3,8 +3,9 @@ from button import Button
 
 
 class EndGame(Menu):
-    def __init__(self, manager, text):
+    def __init__(self, manager, text, difficulty):
         Menu.__init__(self, manager)
+        self.difficulty = difficulty
 
         # Header
         self.head = text
@@ -28,10 +29,16 @@ class EndGame(Menu):
         self.menu_btn.on_clicked = self.on_menu_btn_clicked
 
     def on_replay_btn_clicked(self):
-        pass
+        # Starts new game with same difficulty
+        from gameplay import Gameplay
+        self.manager.pop()
+        self.manager.push(Gameplay(self.manager, self.difficulty))
 
     def on_menu_btn_clicked(self):
-        pass
+        # Resets game, opens up main menu
+        from main_menu import MainMenu
+        self.manager.clear()
+        self.manager.push(MainMenu(self.manager))
 
     def process_input(self, event):
         Menu.process_input(self, event)

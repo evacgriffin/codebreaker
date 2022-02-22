@@ -32,7 +32,7 @@ class PauseMenu(Menu):
         self.reset_btn.on_clicked = self.on_reset_btn_clicked
 
     def on_rules_btn_clicked(self):
-        self.manager.push(Rules(self.manager, False))
+        self.manager.push(Rules(self.manager))
 
     def on_resume_btn_clicked(self):
         self.manager.pop()
@@ -40,7 +40,7 @@ class PauseMenu(Menu):
     def on_reset_btn_clicked(self):
         from main_menu import MainMenu
         self.manager.clear()
-        self.manager.push(MainMenu(self.manager, False))
+        self.manager.push(MainMenu(self.manager))
 
     def process_input(self, event):
         Menu.process_input(self, event)

@@ -169,9 +169,9 @@ class Gameplay(State):
     def check_end(self):
         if len(self.turns[self.curr_turn].hint) == 4 and 'white' not in self.turns[self.curr_turn].hint \
                 and 'empty' not in self.turns[self.curr_turn].hint:
-            self.manager.push(EndGame(self.manager, 'YOU WIN'))
+            self.manager.push(EndGame(self.manager, 'YOU WIN', self.difficulty))
         elif self.curr_turn == self.num_rounds - 1:
-            self.manager.push(EndGame(self.manager, 'GAME OVER'))
+            self.manager.push(EndGame(self.manager, 'GAME OVER', self.difficulty))
         else:
             self.curr_turn += 1
             self.turns[self.curr_turn].begin_turn()
