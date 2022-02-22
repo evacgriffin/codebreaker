@@ -11,6 +11,8 @@ class Slot:
     border_color = (105, 105, 105)
     color = None
 
+    type = 'slot'
+
     def __init__(self, x, y):
         self.x = x
         self.y = y

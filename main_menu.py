@@ -8,7 +8,7 @@ from gameplay import Difficulty
 
 class MainMenu(Menu):
     # Default difficulty: normal
-    difficulty = 1
+    difficulty = Difficulty.NORMAL
 
     def __init__(self, manager, is_paused):
         Menu.__init__(self, manager)

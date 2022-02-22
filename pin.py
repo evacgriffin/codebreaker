@@ -2,10 +2,14 @@ import pygame as pg
 
 
 class Pin:
-
+    # Dimensions
     radius = 15
     x = 25
+
+    # Colors
     border_color = (105, 105, 105)
+
+    type = 'pin'
 
     def __init__(self, y, color):
         self.y = 50 + y * 100

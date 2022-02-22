@@ -19,12 +19,17 @@ class Gameplay(State):
     # Dimensions
     width = 350
     height = 650
+
     # Colors
     bg = (210, 180, 140)
     grid = (50, 50, 50)
     empty_guess = (0, 0, 0)
 
     CODE_COLORS = ['red', 'yellow', 'green', 'blue', 'black', 'white']
+
+    # Initialize turn variables
+    curr_turn = 0
+    curr_hint = []
 
     def __init__(self, manager, difficulty):
         State.__init__(self, manager)
@@ -40,11 +45,11 @@ class Gameplay(State):
             self.num_rounds = 8
 
         # Generate code
-        if difficulty == Difficulty.EASY:
+        if self.difficulty == Difficulty.EASY:
             self.code = (random.sample(self.CODE_COLORS, 4))
-        elif difficulty == Difficulty.NORMAL or difficulty == Difficulty.HARD:
+        elif self.difficulty == Difficulty.NORMAL or self.difficulty == Difficulty.HARD:
             self.code = random.choices(self.CODE_COLORS, k=4)
-        # print(self.code)
+        print(self.code)
 
         # Game objects
         self.pins = []
@@ -67,17 +72,17 @@ class Gameplay(State):
                 self.highlightable.append(slot)
 
         # Create turns
-        curr_turn = 0
+        i = 0
         if difficulty == Difficulty.EASY or difficulty == Difficulty.NORMAL:
             for row in range(0, len(self.slots), 4):
-                turn = Turn(self.slots[row:row + 4], curr_turn)
+                turn = Turn(self.slots[row:row + 4], i)
                 self.turns.append(turn)
-                curr_turn += 1
+                i += 1
         elif difficulty == Difficulty.HARD:
             for row in range(0, len(self.slots) - 16, 4):
-                turn = Turn(self.slots[row:row + 4], curr_turn)
+                turn = Turn(self.slots[row:row + 4], i)
                 self.turns.append(turn)
-                curr_turn += 1
+                i += 1
 
         # Create buttons
         border = 20
@@ -97,11 +102,27 @@ class Gameplay(State):
         self.submit_btn.on_clicked = self.on_submit_btn_clicked
         self.pause_btn.on_clicked = self.on_pause_btn_clicked
 
+        # Enable slots for first turn
+        self.turns[self.curr_turn].begin_turn()
+
     def on_submit_btn_clicked(self):
-        pass
+        self.submit_btn.enabled = False
 
     def on_pause_btn_clicked(self):
         self.manager.push(PauseMenu(self.manager, True))
+
+    def process_input(self, event):
+        State.process_input(self, event)
+
+    def update(self):
+        if self.curr_turn < self.num_rounds:
+            colors_filled = 0
+            for s in self.turns[self.curr_turn].slots:
+                if s.color:
+                    colors_filled += 1
+
+            if colors_filled == 4:
+                self.submit_btn.enabled = True
 
     def draw(self, screen):
         screen.fill(self.bg)
