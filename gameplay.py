@@ -7,6 +7,7 @@ from button import Button
 from turn import Turn
 from pause_menu import PauseMenu
 from enum import Enum
+from end_game import EndGame
 
 
 class Difficulty(Enum):
@@ -170,8 +171,8 @@ class Gameplay(State):
     def check_end(self):
         if len(self.turns[self.curr_turn].hint) == 4 and 'white' not in self.turns[self.curr_turn].hint \
                 and 'empty' not in self.turns[self.curr_turn].hint:
-            #self.win_msg.draw(self.screen)
+            self.manager.push(EndGame(self.manager, 'YOU WIN'))
             pass
         elif self.curr_turn == self.num_rounds - 1:
-            #self.lose_msg.draw(self.screen)
+            self.manager.push(EndGame(self.manager, 'GAME OVER'))
             pass

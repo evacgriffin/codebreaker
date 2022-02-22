@@ -4,9 +4,8 @@ from button import Button
 
 
 class Rules(Menu):
-    def __init__(self, manager, is_paused):
+    def __init__(self, manager):
         Menu.__init__(self, manager)
-        self.is_paused = is_paused
 
         self.text = "Goal: Correctly guess the randomly generated color code.\n" \
                     "Difficulties: Easy - 12 attempts, no repeat colors\n" \

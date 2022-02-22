@@ -10,9 +10,8 @@ class MainMenu(Menu):
     # Default difficulty: normal
     difficulty = Difficulty.NORMAL
 
-    def __init__(self, manager, is_paused):
+    def __init__(self, manager):
         Menu.__init__(self, manager)
-        self.is_paused = is_paused
 
         # Header
         self.head = 'MAIN MENU'
@@ -70,7 +69,7 @@ class MainMenu(Menu):
         self.difficulty = Difficulty.HARD
 
     def on_rules_btn_clicked(self):
-        self.manager.push(Rules(self.manager, False))
+        self.manager.push(Rules(self.manager))
 
     def on_start_btn_clicked(self):
         self.manager.pop()
