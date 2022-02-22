@@ -6,6 +6,13 @@ from slot import Slot
 from button import Button
 from turn import Turn
 from pause_menu import PauseMenu
+from enum import Enum
+
+
+class Difficulty(Enum):
+    EASY = 0
+    NORMAL = 1
+    HARD = 2
 
 
 class Gameplay(State):
@@ -19,11 +26,25 @@ class Gameplay(State):
 
     CODE_COLORS = ['red', 'yellow', 'green', 'blue', 'black', 'white']
 
-    def __init__(self, manager):
+    def __init__(self, manager, difficulty):
         State.__init__(self, manager)
         self.num_rounds = 0
         self.code = None
         self.font = pg.font.SysFont('Calibri', 30)
+        self.difficulty = difficulty
+
+        # Set number of rounds
+        if self.difficulty == Difficulty.EASY or self.difficulty == Difficulty.NORMAL:
+            self.num_rounds = 12
+        elif self.difficulty == Difficulty.HARD:
+            self.num_rounds = 8
+
+        # Generate code
+        if difficulty == Difficulty.EASY:
+            self.code = (random.sample(self.CODE_COLORS, 4))
+        elif difficulty == Difficulty.NORMAL or difficulty == Difficulty.HARD:
+            self.code = random.choices(self.CODE_COLORS, k=4)
+        # print(self.code)
 
         # Game objects
         self.pins = []
@@ -44,6 +65,19 @@ class Gameplay(State):
                 slot = Slot(x, y)
                 self.slots.append(slot)
                 self.highlightable.append(slot)
+
+        # Create turns
+        curr_turn = 0
+        if difficulty == Difficulty.EASY or difficulty == Difficulty.NORMAL:
+            for row in range(0, len(self.slots), 4):
+                turn = Turn(self.slots[row:row + 4], curr_turn)
+                self.turns.append(turn)
+                curr_turn += 1
+        elif difficulty == Difficulty.HARD:
+            for row in range(0, len(self.slots) - 16, 4):
+                turn = Turn(self.slots[row:row + 4], curr_turn)
+                self.turns.append(turn)
+                curr_turn += 1
 
         # Create buttons
         border = 20
@@ -100,35 +134,6 @@ class Gameplay(State):
         for t in self.turns:
             if 'black' in t.hint or 'white' in t.hint:
                 t.show_hint(screen)
-
-    def set_difficulty(self, difficulty):
-        # Set difficulty
-        if difficulty == 'easy' or difficulty == 'normal':
-            self.num_rounds = 12
-        elif difficulty == 'hard':
-            self.num_rounds = 8
-
-    def create_code(self, difficulty):
-        # Generate code
-        if difficulty == 'easy':
-            self.code = (random.sample(self.CODE_COLORS, 4))
-        elif difficulty == 'normal' or difficulty == 'hard':
-            self.code = random.choices(self.CODE_COLORS, k=4)
-        # print(self.code)
-
-    def create_turns(self, difficulty):
-        # Create turns
-        curr_turn = 0
-        if difficulty == 'easy' or difficulty == 'normal':
-            for row in range(0, len(self.slots), 4):
-                turn = Turn(self.slots[row:row + 4], curr_turn)
-                self.turns.append(turn)
-                curr_turn += 1
-        elif difficulty == 'hard':
-            for row in range(0, len(self.slots) - 16, 4):
-                turn = Turn(self.slots[row:row + 4], curr_turn)
-                self.turns.append(turn)
-                curr_turn += 1
 
     def check_end(self, curr_hint, curr_turn):
         if len(curr_hint) == 4 and 'white' not in curr_hint and 'empty' not in curr_hint:

@@ -3,6 +3,7 @@ from button import Button
 from radio_button import RadioButton
 from rules import Rules
 from gameplay import Gameplay
+from gameplay import Difficulty
 
 
 class MainMenu(Menu):
@@ -60,20 +61,20 @@ class MainMenu(Menu):
         self.hard_rad.on_clicked = self.on_hard_clicked
 
     def on_easy_clicked(self):
-        self.difficulty = 0
+        self.difficulty = Difficulty.EASY
 
     def on_normal_clicked(self):
-        self.difficulty = 1
+        self.difficulty = Difficulty.NORMAL
 
     def on_hard_clicked(self):
-        self.difficulty = 2
+        self.difficulty = Difficulty.HARD
 
     def on_rules_btn_clicked(self):
         self.manager.push(Rules(self.manager, False))
 
     def on_start_btn_clicked(self):
         self.manager.pop()
-        self.manager.push(Gameplay(self.manager))
+        self.manager.push(Gameplay(self.manager, self.difficulty))
 
     def process_input(self, event):
         Menu.process_input(self, event)

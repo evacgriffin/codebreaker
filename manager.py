@@ -9,7 +9,8 @@ class Manager:
         self.states[-1].update()
 
     def draw(self, screen):
-        self.states[-1].draw(screen)
+        for state in self.states:
+            state.draw(screen)
 
     def push(self, state):
         if self.states:
@@ -21,5 +22,4 @@ class Manager:
         self.states.pop()
 
     def clear(self):
-        # Remove all states from the list
-        pass
+        self.states.clear()

@@ -38,8 +38,9 @@ class PauseMenu(Menu):
         self.manager.pop()
 
     def on_reset_btn_clicked(self):
-        # How to pop two things in a row and push new MainMenu state
-        pass
+        from main_menu import MainMenu
+        self.manager.clear()
+        self.manager.push(MainMenu(self.manager, False))
 
     def process_input(self, event):
         Menu.process_input(self, event)
