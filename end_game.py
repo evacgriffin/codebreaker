@@ -1,11 +1,25 @@
 from menu import Menu
 from button import Button
+import pygame as pg
 
 
 class EndGame(Menu):
-    def __init__(self, manager, text, difficulty):
+    def __init__(self, manager, text, difficulty, mixer):
         Menu.__init__(self, manager)
         self.difficulty = difficulty
+
+        # Load sound
+        self.mixer = mixer
+        self.win_fx = pg.mixer.Sound('sound/Win.wav')
+        self.win_fx.set_volume(0.025)
+
+        self.lose_fx = pg.mixer.Sound('sound/GameOver.wav')
+        self.lose_fx.set_volume(0.025)
+
+        if text == 'YOU WIN':
+            self.win_fx.play()
+        elif text == 'GAME OVER':
+            self.lose_fx.play()
 
         # Header
         self.head = text
@@ -32,13 +46,13 @@ class EndGame(Menu):
         # Starts new game with same difficulty
         from gameplay import Gameplay
         self.manager.pop()
-        self.manager.push(Gameplay(self.manager, self.difficulty))
+        self.manager.push(Gameplay(self.manager, self.difficulty, self.mixer))
 
     def on_menu_btn_clicked(self):
         # Resets game, opens up main menu
         from main_menu import MainMenu
         self.manager.clear()
-        self.manager.push(MainMenu(self.manager))
+        self.manager.push(MainMenu(self.manager, self.mixer))
 
     def process_input(self, event):
         Menu.process_input(self, event)

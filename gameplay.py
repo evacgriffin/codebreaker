@@ -27,17 +27,35 @@ class Gameplay(State):
     empty_guess = (0, 0, 0)
 
     CODE_COLORS = ['red', 'yellow', 'green', 'blue', 'black', 'white']
+    SONGS = ['sound/Gameplay1.ogg', 'sound/Gameplay2.ogg', 'sound/Gameplay3.ogg', 'sound/Gameplay4.ogg']
 
     # Initialize turn variables
     curr_turn = 0
     curr_hint = []
 
-    def __init__(self, manager, difficulty):
+    def __init__(self, manager, difficulty, mixer):
         State.__init__(self, manager)
         self.num_rounds = 0
         self.code = None
         self.font = pg.font.SysFont('Calibri', 30)
         self.difficulty = difficulty
+
+        # Game objects
+        self.pins = []
+        self.slots = []
+        self.buttons = []
+        self.highlightable = []
+        self.turns = []
+
+        # Define mixer
+        self.mixer = mixer
+        self.mixer.music.set_volume(0.025)
+        # Start playing first song
+        curr_song = self.SONGS[0]
+        self.mixer.music.load(curr_song)
+        self.mixer.music.play()
+        self.SONGS = self.SONGS[1:]
+        self.SONGS.append(curr_song)
 
         # Set number of rounds
         if self.difficulty == Difficulty.EASY or self.difficulty == Difficulty.NORMAL:
@@ -51,13 +69,6 @@ class Gameplay(State):
         elif self.difficulty == Difficulty.NORMAL or self.difficulty == Difficulty.HARD:
             self.code = random.choices(self.CODE_COLORS, k=4)
         print(self.code)
-
-        # Game objects
-        self.pins = []
-        self.slots = []
-        self.buttons = []
-        self.highlightable = []
-        self.turns = []
 
         # Create pins
         for y in range(0, 6):
@@ -112,7 +123,7 @@ class Gameplay(State):
         self.check_end()
 
     def on_pause_btn_clicked(self):
-        self.manager.push(PauseMenu(self.manager, True))
+        self.manager.push(PauseMenu(self.manager, self.mixer))
 
     def process_input(self, event):
         State.process_input(self, event)
@@ -126,6 +137,13 @@ class Gameplay(State):
 
             if colors_filled == 4:
                 self.submit_btn.enabled = True
+
+        if not self.mixer.get_busy:
+            curr_song = self.SONGS[0]
+            self.mixer.music.load(curr_song)
+            self.mixer.music.play()
+            self.SONGS = self.SONGS[1:]
+            self.SONGS.append(curr_song)
 
     def draw(self, screen):
         screen.fill(self.bg)
@@ -169,9 +187,14 @@ class Gameplay(State):
     def check_end(self):
         if len(self.turns[self.curr_turn].hint) == 4 and 'white' not in self.turns[self.curr_turn].hint \
                 and 'empty' not in self.turns[self.curr_turn].hint:
-            self.manager.push(EndGame(self.manager, 'YOU WIN', self.difficulty))
+            self.destroy()
+            self.manager.push(EndGame(self.manager, 'YOU WIN', self.difficulty, self.mixer))
         elif self.curr_turn == self.num_rounds - 1:
-            self.manager.push(EndGame(self.manager, 'GAME OVER', self.difficulty))
+            self.destroy()
+            self.manager.push(EndGame(self.manager, 'GAME OVER', self.difficulty, self.mixer))
         else:
             self.curr_turn += 1
             self.turns[self.curr_turn].begin_turn()
+
+    def destroy(self):
+        self.mixer.music.stop()

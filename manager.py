@@ -19,7 +19,10 @@ class Manager:
 
     def pop(self):
         self.states[-1].deactivate()
+        self.states[-1].destroy()
         self.states.pop()
 
     def clear(self):
+        for s in self.states:
+            s.destroy()
         self.states.clear()

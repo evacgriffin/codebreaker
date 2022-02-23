@@ -4,10 +4,9 @@ from rules import Rules
 
 
 class PauseMenu(Menu):
-    def __init__(self, manager, is_paused):
+    def __init__(self, manager, mixer):
         Menu.__init__(self, manager)
-        self.is_paused = is_paused
-
+        self.mixer = mixer
         self.text = 'PAUSED'
         self.img = self.header_font.render(self.text, True, self.txt_color)
         img_size = self.img.get_size()
@@ -40,7 +39,7 @@ class PauseMenu(Menu):
     def on_reset_btn_clicked(self):
         from main_menu import MainMenu
         self.manager.clear()
-        self.manager.push(MainMenu(self.manager))
+        self.manager.push(MainMenu(self.manager, self.mixer))
 
     def process_input(self, event):
         Menu.process_input(self, event)

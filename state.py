@@ -95,3 +95,6 @@ class State:
         if self.curr_selected_obj:
             self.curr_selected_obj.selected = False
         self.curr_selected_obj = None
+
+    def destroy(self):
+        pass

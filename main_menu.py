@@ -4,14 +4,21 @@ from radio_button import RadioButton
 from rules import Rules
 from gameplay import Gameplay
 from gameplay import Difficulty
+import pygame as pg
 
 
 class MainMenu(Menu):
     # Default difficulty: normal
     difficulty = Difficulty.NORMAL
 
-    def __init__(self, manager):
+    def __init__(self, manager, mixer):
         Menu.__init__(self, manager)
+
+        # Load sound
+        self.mixer = mixer
+        self.mixer.music.set_volume(0.025)
+        self.mixer.music.load('sound/Menu.ogg')
+        self.mixer.music.play(loops=-1)
 
         # Header
         self.head = 'MAIN MENU'
@@ -73,7 +80,7 @@ class MainMenu(Menu):
 
     def on_start_btn_clicked(self):
         self.manager.pop()
-        self.manager.push(Gameplay(self.manager, self.difficulty))
+        self.manager.push(Gameplay(self.manager, self.difficulty, self.mixer))
 
     def process_input(self, event):
         Menu.process_input(self, event)
@@ -85,3 +92,6 @@ class MainMenu(Menu):
 
         for obj in self.highlightable:
             obj.draw(screen)
+
+    def destroy(self):
+        self.mixer.stop()
