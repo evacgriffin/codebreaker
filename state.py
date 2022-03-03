@@ -30,15 +30,12 @@ class State:
                         if hasattr(h, 'selected') and h.selected:
                             self.curr_selected_obj = h
 
-                    if hovered_obj.selected:
-                        self.curr_selected_obj = hovered_obj
-
-                    elif self.curr_selected_obj:
+                    if self.curr_selected_obj != self.curr_hovered_obj:
                         self.curr_selected_obj.fill_color = None
                         self.curr_selected_obj.selected = False
-
-                    self.curr_selected_obj = hovered_obj
-                    self.curr_selected_obj.fill_color = (0, 0, 0)
+                        self.curr_selected_obj = self.curr_hovered_obj
+                        self.curr_selected_obj.fill_color = (0, 0, 0)
+                        self.curr_selected_obj.selected = True
 
                 hovered_obj.on_clicked()
 
@@ -90,10 +87,6 @@ class State:
         if self.curr_hovered_obj:
             self.curr_hovered_obj.hovered = False
         self.curr_hovered_obj = None
-
-        if self.curr_selected_obj:
-            self.curr_selected_obj.selected = False
-        self.curr_selected_obj = None
 
     def destroy(self):
         pass
