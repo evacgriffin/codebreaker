@@ -63,3 +63,7 @@ class EndGame(Menu):
 
         for obj in self.highlightable:
             obj.draw(screen)
+
+    def destroy(self):
+        self.win_fx.stop()
+        self.lose_fx.stop()

@@ -68,7 +68,6 @@ class Gameplay(State):
             self.code = (random.sample(self.CODE_COLORS, 4))
         elif self.difficulty == Difficulty.NORMAL or self.difficulty == Difficulty.HARD:
             self.code = random.choices(self.CODE_COLORS, k=4)
-        print(self.code)
 
         # Create pins
         for y in range(0, 6):
@@ -138,7 +137,7 @@ class Gameplay(State):
             if colors_filled == 4:
                 self.submit_btn.enabled = True
 
-        if not self.mixer.get_busy:
+        if not self.mixer.music.get_busy():
             curr_song = self.SONGS[0]
             self.mixer.music.load(curr_song)
             self.mixer.music.play()

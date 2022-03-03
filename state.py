@@ -23,7 +23,6 @@ class State:
             self.curr_hovered_obj = hovered_obj
             self.curr_hovered_obj.hovered = True
 
-        # QUESTION: Put the code specific to buttons/radio buttons in main_menu?
         if event.type == pg.MOUSEBUTTONDOWN:
             if hasattr(hovered_obj, 'on_clicked'):
                 if hasattr(hovered_obj, 'type') and hovered_obj.type == 'radio':
