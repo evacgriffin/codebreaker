@@ -187,10 +187,10 @@ class Gameplay(State):
         if len(self.turns[self.curr_turn].hint) == 4 and 'white' not in self.turns[self.curr_turn].hint \
                 and 'empty' not in self.turns[self.curr_turn].hint:
             self.destroy()
-            self.manager.push(EndGame(self.manager, 'YOU WIN', self.difficulty, self.mixer))
+            self.manager.push(EndGame(self.manager, 'YOU WIN', self.difficulty, self.mixer, self.code))
         elif self.curr_turn == self.num_rounds - 1:
             self.destroy()
-            self.manager.push(EndGame(self.manager, 'GAME OVER', self.difficulty, self.mixer))
+            self.manager.push(EndGame(self.manager, 'GAME OVER', self.difficulty, self.mixer, self.code))
         else:
             self.curr_turn += 1
             self.turns[self.curr_turn].begin_turn()
