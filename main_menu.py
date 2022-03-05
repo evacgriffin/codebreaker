@@ -44,9 +44,6 @@ class MainMenu(Menu):
         self.normal_rad.selected = True
         self.normal_rad.fill_color = (0, 0, 0)
         self.hard_rad = RadioButton(self.x + 80, 275, 'Hard')
-        self.easy_rad.on_clicked = self.on_easy_clicked
-        self.normal_rad.on_clicked = self.on_normal_clicked
-        self.hard_rad.on_clicked = self.on_hard_clicked
 
         # Buttons
         self.rules_btn = Button(self.x + 10, self.y + self.height - 50, self.header_font, 'Rules')
@@ -59,20 +56,27 @@ class MainMenu(Menu):
         self.highlightable.append(self.normal_rad)
         self.highlightable.append(self.hard_rad)
 
+        # Set radio group
+        radio_group = [self.easy_rad, self.normal_rad, self.hard_rad]
+        for btn in radio_group:
+            btn.group = radio_group
+
         # On-clicked property
         self.rules_btn.on_clicked = self.on_rules_btn_clicked
         self.start_btn.on_clicked = self.on_start_btn_clicked
-        self.easy_rad.on_clicked = self.on_easy_clicked
-        self.normal_rad.on_clicked = self.on_normal_clicked
-        self.hard_rad.on_clicked = self.on_hard_clicked
 
-    def on_easy_clicked(self):
+        # On-selected property
+        self.easy_rad.on_selected = self.on_easy_selected
+        self.normal_rad.on_selected = self.on_normal_selected
+        self.hard_rad.on_selected = self.on_hard_selected
+
+    def on_easy_selected(self):
         self.difficulty = Difficulty.EASY
 
-    def on_normal_clicked(self):
+    def on_normal_selected(self):
         self.difficulty = Difficulty.NORMAL
 
-    def on_hard_clicked(self):
+    def on_hard_selected(self):
         self.difficulty = Difficulty.HARD
 
     def on_rules_btn_clicked(self):
@@ -81,9 +85,6 @@ class MainMenu(Menu):
     def on_start_btn_clicked(self):
         self.manager.pop()
         self.manager.push(Gameplay(self.manager, self.difficulty, self.mixer))
-
-    def process_input(self, event):
-        Menu.process_input(self, event)
 
     def draw(self, screen):
         Menu.draw(self, screen)

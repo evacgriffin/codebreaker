@@ -41,11 +41,6 @@ class PauseMenu(Menu):
         self.manager.clear()
         self.manager.push(MainMenu(self.manager, self.mixer))
 
-    def process_input(self, event):
-        Menu.process_input(self, event)
-
-        # Additional input processing (handle button clicks)
-
     def draw(self, screen):
         Menu.draw(self, screen)
         screen.blit(self.img, self.img_pos)

@@ -25,18 +25,6 @@ class State:
 
         if event.type == pg.MOUSEBUTTONDOWN:
             if hasattr(hovered_obj, 'on_clicked'):
-                if hasattr(hovered_obj, 'type') and hovered_obj.type == 'radio':
-                    for h in self.highlightable:
-                        if hasattr(h, 'selected') and h.selected:
-                            self.curr_selected_obj = h
-
-                    if self.curr_selected_obj != self.curr_hovered_obj:
-                        self.curr_selected_obj.fill_color = None
-                        self.curr_selected_obj.selected = False
-                        self.curr_selected_obj = self.curr_hovered_obj
-                        self.curr_selected_obj.fill_color = (0, 0, 0)
-                        self.curr_selected_obj.selected = True
-
                 hovered_obj.on_clicked()
 
             if hasattr(hovered_obj, 'type') and hovered_obj.type == 'slot' and hovered_obj.enabled:

@@ -11,8 +11,10 @@ class RadioButton:
     text_color = (0, 0, 0)
     bg_color = (210, 180, 140)
     border_color = (105, 105, 105)
-    fill_color = None
-    type = 'radio'
+    fill_color = (0, 0, 0)
+
+    # Radio group
+    group = []
 
     def __init__(self, x, y, text):
         self.x = x
@@ -32,8 +34,16 @@ class RadioButton:
         self.hovered = False
         self.selected = False
 
+    def on_clicked(self):
+        for btn in self.group:
+            if btn.selected:
+                btn.selected = False
+
+        self.selected = True
+        self.on_selected()
+
     def draw(self, screen):
-        if self.fill_color:
+        if self.selected:
             pg.draw.circle(screen, self.fill_color, self.pos, self.radius)
         else:
             pg.draw.circle(screen, self.border_color, self.pos, self.radius, width=self.width)
