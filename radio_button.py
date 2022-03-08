@@ -29,6 +29,7 @@ class RadioButton:
         text_y = self.y - 15
         self.text_pos = (text_x, text_y)
 
+        self.on_selected = None
         self.enabled = True
         self.submitted = False
         self.hovered = False
@@ -40,7 +41,8 @@ class RadioButton:
                 btn.selected = False
 
         self.selected = True
-        self.on_selected()
+        if self.on_selected:
+            self.on_selected()
 
     def draw(self, screen):
         if self.selected:

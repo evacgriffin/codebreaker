@@ -39,8 +39,9 @@ class Rules(Menu):
         y = self.y
         pos = (x, y)
         for line in words:
+            word_height = 0
             for word in line:
-                word_surface = self.rules_font.render(word, 0, self.txt_color)
+                word_surface = self.rules_font.render(word, True, self.txt_color)
                 word_width, word_height = word_surface.get_size()
                 if x + word_width >= max_width:
                     x = pos[0]

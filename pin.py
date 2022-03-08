@@ -9,7 +9,8 @@ class Pin:
     # Colors
     border_color = (105, 105, 105)
 
-    type = 'pin'
+    # Pin group
+    group = []
 
     def __init__(self, y, color):
         self.y = 50 + y * 100
@@ -18,6 +19,13 @@ class Pin:
         self.hitbox = [25 - self.radius, 25 + self.radius, self.y - self.radius, self.y + self.radius]
         self.hovered = False
         self.selected = False
+
+    def on_clicked(self):
+        for p in self.group:
+            if p.selected:
+                p.selected = False
+
+        self.selected = True
 
     def draw(self, screen):
         pg.draw.circle(screen, self.color, self.pos, self.radius)

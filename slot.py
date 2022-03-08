@@ -11,7 +11,8 @@ class Slot:
     border_color = (105, 105, 105)
     color = None
 
-    type = 'slot'
+    # Slot group
+    group = []
 
     def __init__(self, x, y):
         self.x = x
@@ -24,6 +25,14 @@ class Slot:
         self.enabled = False
         self.hovered = False
         self.selected = False
+
+    def on_clicked(self):
+        if self.enabled:
+            for s in self.group:
+                if s.selected:
+                    s.selected = False
+
+            self.selected = True
 
     def draw(self, screen):
         if self.color:

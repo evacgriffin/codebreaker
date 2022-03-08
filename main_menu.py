@@ -4,7 +4,6 @@ from radio_button import RadioButton
 from rules import Rules
 from gameplay import Gameplay
 from gameplay import Difficulty
-import pygame as pg
 
 
 class MainMenu(Menu):

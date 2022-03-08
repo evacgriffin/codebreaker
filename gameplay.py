@@ -46,16 +46,14 @@ class Gameplay(State):
         self.buttons = []
         self.highlightable = []
         self.turns = []
+        self.curr_selected_slot = None
+        self.curr_selected_pin = None
 
         # Define mixer
         self.mixer = mixer
         self.mixer.music.set_volume(0.025)
         # Start playing first song
-        curr_song = self.SONGS[0]
-        self.mixer.music.load(curr_song)
-        self.mixer.music.play()
-        self.SONGS = self.SONGS[1:]
-        self.SONGS.append(curr_song)
+        self.play_next_song()
 
         # Set number of rounds
         if self.difficulty == Difficulty.EASY or self.difficulty == Difficulty.NORMAL:
@@ -74,6 +72,9 @@ class Gameplay(State):
             pin = Pin(y, self.CODE_COLORS[y])
             self.pins.append(pin)
             self.highlightable.append(pin)
+
+        for p in self.pins:
+            p.group = self.pins
 
         # Create slots
         for y in range(0, 12):
@@ -127,6 +128,21 @@ class Gameplay(State):
     def process_input(self, event):
         State.process_input(self, event)
 
+        for p in self.pins:
+            if p.selected:
+                self.curr_selected_pin = p
+
+        for s in self.turns[self.curr_turn].slots:
+            if s.selected:
+                self.curr_selected_slot = s
+
+        if self.curr_selected_pin and self.curr_selected_slot:
+            self.curr_selected_slot.color = self.curr_selected_pin.color
+            self.curr_selected_slot.selected = False
+            self.curr_selected_pin.selected = False
+            self.curr_selected_slot = None
+            self.curr_selected_pin = None
+
     def update(self):
         if self.curr_turn < self.num_rounds:
             colors_filled = 0
@@ -138,11 +154,14 @@ class Gameplay(State):
                 self.submit_btn.enabled = True
 
         if not self.mixer.music.get_busy():
-            curr_song = self.SONGS[0]
-            self.mixer.music.load(curr_song)
-            self.mixer.music.play()
-            self.SONGS = self.SONGS[1:]
-            self.SONGS.append(curr_song)
+            self.play_next_song()
+
+    def play_next_song(self):
+        curr_song = self.SONGS[0]
+        self.mixer.music.load(curr_song)
+        self.mixer.music.play()
+        self.SONGS = self.SONGS[1:]
+        self.SONGS.append(curr_song)
 
     def draw(self, screen):
         screen.fill(self.bg)

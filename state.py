@@ -2,14 +2,11 @@ import pygame as pg
 
 
 class State:
-    # Handles hover, select, and click functionality
+    # Handles hover and click functionality
     def __init__(self, manager):
         self.manager = manager
         self.highlightable = []
         self.curr_hovered_obj = None
-        self.curr_selected_obj = None
-        self.curr_selected_slot = None
-        self.curr_selected_pin = None
 
     def process_input(self, event):
         if self.curr_hovered_obj:
@@ -26,37 +23,6 @@ class State:
         if event.type == pg.MOUSEBUTTONDOWN:
             if hasattr(hovered_obj, 'on_clicked'):
                 hovered_obj.on_clicked()
-
-            if hasattr(hovered_obj, 'type') and hovered_obj.type == 'slot' and hovered_obj.enabled:
-                if self.curr_selected_slot:
-                    self.curr_selected_slot.selected = False
-                # Get object under mouse
-                hovered_obj = self.get_obj_under_mouse()
-
-                if hasattr(hovered_obj, 'selected'):
-                    if self.curr_selected_slot:
-                        self.curr_selected_slot.selected = False
-                    self.curr_selected_slot = hovered_obj
-                    self.curr_selected_slot.selected = True
-
-            if hasattr(hovered_obj, 'type') and hovered_obj.type == 'pin':
-                if self.curr_selected_pin:
-                    self.curr_selected_pin.selected = False
-                # Get object under mouse
-                hovered_obj = self.get_obj_under_mouse()
-
-                if hasattr(hovered_obj, 'selected'):
-                    if self.curr_selected_pin:
-                        self.curr_selected_pin.selected = False
-                    self.curr_selected_pin = hovered_obj
-                    self.curr_selected_pin.selected = True
-
-            if (self.curr_selected_pin and self.curr_selected_slot) and self.curr_selected_slot.enabled:
-                self.curr_selected_slot.color = self.curr_selected_pin.color
-                self.curr_selected_slot.selected = False
-                self.curr_selected_pin.selected = False
-                self.curr_selected_slot = None
-                self.curr_selected_pin = None
 
     def get_obj_under_mouse(self):
         mouse_pos = pg.mouse.get_pos()

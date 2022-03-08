@@ -1,5 +1,4 @@
 from collections import Counter
-import pygame as pg
 
 
 class Turn:
@@ -14,6 +13,11 @@ class Turn:
         self.guess = []
         self.hint = []
         self.curr_turn = curr_turn
+        self.selected_slot = None
+
+        # Set slot group
+        for s in self.slots:
+            s.group = self.slots
 
     def begin_turn(self):
         for slot in self.slots:
