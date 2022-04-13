@@ -70,6 +70,8 @@ more difficulties, and either a web version or mobile version to allow my
 family and friends to easily play the game on their devices.
 
 #### Files:
+The sound folder includes the sound files used for the game.
+
 main.py - Initializes the game window, defines some global game variables, runs the
 main game loop
 
@@ -105,3 +107,6 @@ by the player)
 turn.py - Handles each turn by enabling the slots for the current turn, locking in the
 player's guess, checking the correctness of the guess, creating the hint, and disabling
 the slots for the current turn (to ensure players cannot change previous guesses)
+
+end_game.py - Displays the "end-game" message box, correct code, and buttons to
+reset or restart the game
